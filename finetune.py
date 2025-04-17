@@ -1,6 +1,10 @@
 from pprint import pprint
 import ray
 
+
+#basic finetuning tutorial 
+# #from https://docs.ray.io/en/latest/train/examples/transformers/huggingface_text_classification.html
+
 ray.init()
 
 pprint(ray.cluster_resources())
