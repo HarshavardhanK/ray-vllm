@@ -5,7 +5,7 @@ ray.init()
 # Define parameters
 task = "cola"
 model_checkpoint = "distilbert-base-uncased"
-batch_size = 16
+batch_size = 4
 use_gpu = True
 num_workers = 1
 
@@ -74,7 +74,7 @@ def collate_fn(examples: Dict[str, np.array]):
 # Setup for training
 import torch
 import numpy as np
-from datasets import load_metric
+from evaluate import load as load_metric
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 import ray.train
 from ray.train.huggingface.transformers import prepare_trainer, RayTrainReportCallback
@@ -123,9 +123,9 @@ def train_func(config):
     print("max_steps_per_epoch: ", max_steps_per_epoch)
 
     args = TrainingArguments(
-        name,
-        evaluation_strategy="epoch",
-        save_strategy="epoch",
+        output_dir=name,
+        eval_strategy="epoch",
+        save_strategy="no",  # Disable saving checkpoints
         logging_strategy="epoch",
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
@@ -137,6 +137,11 @@ def train_func(config):
         disable_tqdm=True,  # declutter the output a little
         no_cuda=not use_gpu,  # you need to explicitly set no_cuda if you want CPUs
         report_to="none",
+        # Add memory efficient training options
+        gradient_accumulation_steps=4,  # Accumulate gradients before updating
+        fp16=True,  # Use mixed precision training
+        gradient_checkpointing=True,  # Enable gradient checkpointing
+        optim="adamw_torch_fused",  # Use fused AdamW optimizer
     )
 
     def compute_metrics(eval_pred):
@@ -175,9 +180,10 @@ trainer = TorchTrainer(
     },
     run_config=RunConfig(
         checkpoint_config=CheckpointConfig(
-            num_to_keep=1,
+            num_to_keep=1,  # Keep only one checkpoint
             checkpoint_score_attribute="eval_loss",
             checkpoint_score_order="min",
+            checkpoint_frequency=0,  # Only save at the end
         ),
     ),
 )
