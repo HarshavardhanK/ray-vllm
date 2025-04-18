@@ -1,20 +1,20 @@
-# Initialize Ray
+
 import ray
 ray.init()
 
-# Define parameters
+#Define parameters
 task = "cola"
 model_checkpoint = "distilbert-base-uncased"
 batch_size = 4
 use_gpu = True
 num_workers = 1
 
-# Load the dataset
+
 from datasets import load_dataset
 actual_task = "mnli" if task == "mnli-mm" else task
 datasets = load_dataset("glue", actual_task)
 
-# Convert to Ray Data
+#Convert to Ray Data
 import ray.data
 ray_datasets = {
     "train": ray.data.from_huggingface(datasets["train"]),
@@ -22,11 +22,10 @@ ray_datasets = {
     "test": ray.data.from_huggingface(datasets["test"]),
 }
 
-# Set up tokenizer
 from transformers import AutoTokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, use_fast=True)
 
-# Define task to keys mapping
+#Define task to keys mapping
 task_to_keys = {
     "cola": ("sentence", None),
     "mnli": ("premise", "hypothesis"),
@@ -40,7 +39,7 @@ task_to_keys = {
     "wnli": ("sentence1", "sentence2"),
 }
 
-# Create preprocessing function
+#Create preprocessing function
 import torch
 import numpy as np
 from typing import Dict
@@ -71,7 +70,7 @@ def collate_fn(examples: Dict[str, np.array]):
 
     return outputs
 
-# Setup for training
+#Setup for training
 import torch
 import numpy as np
 from evaluate import load as load_metric
@@ -97,10 +96,10 @@ validation_key = (
 )
 name = f"{model_name}-finetuned-{task}"
 
-# Calculate the maximum steps per epoch
+#Calculate the maximum steps per epoch
 max_steps_per_epoch = ray_datasets["train"].count() // (batch_size * num_workers)
 
-# Define training function
+#Define training function
 def train_func(config):
     print(f"Is CUDA available: {torch.cuda.is_available()}")
 
@@ -125,7 +124,7 @@ def train_func(config):
     args = TrainingArguments(
         output_dir=name,
         eval_strategy="epoch",
-        save_strategy="no",  # Disable saving checkpoints
+        save_strategy="no",  #Disable saving checkpoints
         logging_strategy="epoch",
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
@@ -134,14 +133,14 @@ def train_func(config):
         weight_decay=config.get("weight_decay", 0.01),
         push_to_hub=False,
         max_steps=max_steps_per_epoch * config.get("epochs", 2),
-        disable_tqdm=True,  # declutter the output a little
-        no_cuda=not use_gpu,  # you need to explicitly set no_cuda if you want CPUs
+        disable_tqdm=True,  #declutter the output a little
+        no_cuda=not use_gpu,  #you need to explicitly set no_cuda if you want CPUs
         report_to="none",
-        # Add memory efficient training options
-        gradient_accumulation_steps=4,  # Accumulate gradients before updating
-        fp16=True,  # Use mixed precision training
-        gradient_checkpointing=True,  # Enable gradient checkpointing
-        optim="adamw_torch_fused",  # Use fused AdamW optimizer
+        #Add memory efficient training options
+        gradient_accumulation_steps=4,  #Accumulate gradients before updating
+        fp16=True,  #Use mixed precision training
+        gradient_checkpointing=True,  #Enable gradient checkpointing
+        optim="adamw_torch_fused",  #Use fused AdamW optimizer
     )
 
     def compute_metrics(eval_pred):
@@ -167,7 +166,7 @@ def train_func(config):
     print("Starting training")
     trainer.train()
 
-# Create the trainer
+#Create the trainer
 from ray.train.torch import TorchTrainer
 from ray.train import RunConfig, ScalingConfig, CheckpointConfig
 
@@ -183,15 +182,15 @@ trainer = TorchTrainer(
             num_to_keep=1,  # Keep only one checkpoint
             checkpoint_score_attribute="eval_loss",
             checkpoint_score_order="min",
-            checkpoint_frequency=0,  # Only save at the end
+            checkpoint_frequency=0,  #Only save at the end
         ),
     ),
 )
 
-# Start training
+#Start training
 result = trainer.fit()
 
-# Hyperparameter tuning with Ray Tune
+#Hyperparameter tuning with Ray Tune
 from ray import tune
 from ray.tune import Tuner
 from ray.tune.schedulers.async_hyperband import ASHAScheduler
@@ -225,11 +224,11 @@ tuner = Tuner(
 
 tune_results = tuner.fit()
 
-# Get best result and view results
+#Get best result and view results
 best_result = tune_results.get_best_result()
 tune_results.get_dataframe().sort_values("eval_loss")
 
-# Load and push the model to Hugging Face Hub (optional)
+#Load and push the model to Hugging Face Hub (optional)
 import os
 from ray.train import Checkpoint
 
