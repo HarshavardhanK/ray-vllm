@@ -114,7 +114,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [NVIDIA](https://developer.nvidia.com/) - GPU optimization tools
 
 ---
-
-<div align="center">
-  <sub>Built with ❤️ by the community</sub>
-</div>
