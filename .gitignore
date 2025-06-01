@@ -44,7 +44,6 @@ ray_worker_*
 raylet_*
 ray_client_server_*
 ray_client_*
-ray_*
 *.log
 
 # vLLM
