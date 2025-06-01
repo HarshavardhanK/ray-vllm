@@ -1,21 +1,26 @@
 import json
 import argparse
+
 from vllm import LLM, SamplingParams
 import torch
+
 from tqdm import tqdm
+
 import time
 from typing import List, Dict, Any
 
 def load_jsonl(file_path: str) -> List[Dict[str, Any]]:
     """Load data from a JSONL file."""
     data = []
+    
     with open(file_path, 'r', encoding='utf-8') as f:
         for line in f:
             data.append(json.loads(line))
+            
     return data
 
 def save_jsonl(data: List[Dict[str, Any]], file_path: str):
-    """Save data to a JSONL file."""
+
     with open(file_path, 'w', encoding='utf-8') as f:
         for item in data:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -33,34 +38,42 @@ def process_batch(
 ):
     """Process a batch of prompts from a JSONL file."""
     
-    # Load the model
+    #Load the model
     print("Loading model...")
+    
     llm = LLM(
         model=model_name,
-        tensor_parallel_size=torch.cuda.device_count(),
+        tensor_parallel_size=torch.cuda.device_count(), #take the max number of GPUs
+        
         gpu_memory_utilization=0.9,
         enforce_eager=True,
+        
         max_num_batched_tokens=4096,
         max_num_seqs=256,
+        
         max_model_len=2048,
         dtype="bfloat16"
     )
     
-    # Load input data
+    #load input data
     print("Loading input data...")
     data = load_jsonl(input_file)
     
-    # Create sampling parameters
+    #create sampling parameters
     sampling_params = SamplingParams(
+        
         temperature=temperature,
         top_p=top_p,
         max_tokens=max_tokens,
+        
         presence_penalty=presence_penalty,
         frequency_penalty=frequency_penalty
+        
     )
     
     # Process in batches
     print("Processing prompts...")
+    
     results = []
     total_time = 0
     
@@ -68,13 +81,12 @@ def process_batch(
         batch = data[i:i + batch_size]
         prompts = [item["prompt"] for item in batch]
         
-        # Generate responses
+        #Generate responses
         start_time = time.time()
         outputs = llm.generate(prompts, sampling_params)
         end_time = time.time()
         total_time += end_time - start_time
         
-        # Process outputs
         for item, output in zip(batch, outputs):
             result = {
                 "id": item["id"],
@@ -84,12 +96,13 @@ def process_batch(
             }
             results.append(result)
     
-    # Save results
+    #Save results
     print("Saving results...")
     save_jsonl(results, output_file)
     
-    # Print statistics
+    #Print statistics
     avg_time = total_time / len(data)
+    
     print(f"\nProcessing complete!")
     print(f"Total prompts processed: {len(data)}")
     print(f"Average time per prompt: {avg_time:.2f} seconds")
