@@ -132,6 +132,7 @@ db.sqlite3-journal
 *.bak
 *.swp
 *~.nib
+.gitignore
 
 *.documentation.md
 *.instructions.md
