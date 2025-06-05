@@ -54,8 +54,8 @@ def plot_metrics(original_metrics, optimized_metrics, output_dir):
     
     # Plot 3: GPU Memory Usage
     gpu_memory = [
-        np.mean([m[0]['memory_used'] for m in original_metrics.get('gpu_metrics', [[{'memory_used': 0}]])]),
-        np.mean([m[0]['memory_used'] for m in optimized_metrics.get('gpu_metrics', [[{'memory_used': 0}]])])
+        np.mean([m.get('memory_used', 0) for m in original_metrics.get('gpu_metrics', [{'memory_used': 0}])]),
+        np.mean([m.get('memory_used', 0) for m in optimized_metrics.get('gpu_metrics', [{'memory_used': 0}])])
     ]
     ax3.bar(['Original', 'Optimized'], gpu_memory)
     ax3.set_title('Average GPU Memory Usage')
@@ -63,8 +63,8 @@ def plot_metrics(original_metrics, optimized_metrics, output_dir):
     
     # Plot 4: System Memory Usage
     sys_memory = [
-        np.mean([m['memory_used'] for m in original_metrics.get('system_metrics', [{'memory_used': 0}])]),
-        np.mean([m['memory_used'] for m in optimized_metrics.get('system_metrics', [{'memory_used': 0}])])
+        np.mean([m.get('memory_used', 0) for m in original_metrics.get('system_metrics', [{'memory_used': 0}])]),
+        np.mean([m.get('memory_used', 0) for m in optimized_metrics.get('system_metrics', [{'memory_used': 0}])])
     ]
     ax4.bar(['Original', 'Optimized'], sys_memory)
     ax4.set_title('Average System Memory Usage')

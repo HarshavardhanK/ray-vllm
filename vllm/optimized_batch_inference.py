@@ -57,7 +57,7 @@ def process_batch(
     max_tokens: int = 128,
     presence_penalty: float = 0.0,
     frequency_penalty: float = 0.0,
-    batch_size: int = 8,
+    batch_size: int = 32,
     num_workers: int = 4
 ):
     """Process a batch of prompts from a JSONL file with optimized performance."""
@@ -67,24 +67,24 @@ def process_batch(
         'start_time': time.time(),
         'gpu_metrics': [],
         'system_metrics': [],
-        'batch_times': [],
-        'memory_usage': []
+        'batch_times': []
     }
     
     # Clear CUDA cache and set memory allocation strategy
     torch.cuda.empty_cache()
-    torch.cuda.set_per_process_memory_fraction(0.9)
+    torch.cuda.set_per_process_memory_fraction(0.85)
     
     print("Loading model...")
     llm = LLM(
         model=model_name,
         tensor_parallel_size=torch.cuda.device_count(),
         gpu_memory_utilization=0.9,
-        enforce_eager=False,  # Changed to False to enable CUDA graph optimization
-        max_num_batched_tokens=4096,
-        max_num_seqs=256,
+        enforce_eager=True,
+        max_num_batched_tokens=8192,
+        max_num_seqs=512,
         max_model_len=2048,
-        dtype="bfloat16"
+        dtype="bfloat16",
+        trust_remote_code=True
     )
     
     print("Loading input data...")
@@ -101,7 +101,7 @@ def process_batch(
     print("Processing prompts...")
     results = []
     
-    # Process in batches without thread pool
+    # Process in batches with dynamic batch size
     for i in tqdm(range(0, len(data), batch_size)):
         batch = data[i:i + batch_size]
         prompts = [item["prompt"] for item in batch]
@@ -111,46 +111,43 @@ def process_batch(
         performance_metrics['system_metrics'].append(get_system_metrics())
         
         # Process batch
-        start_time = time.time()
+        batch_start_time = time.time()
         outputs = llm.generate(prompts, sampling_params)
-        end_time = time.time()
+        batch_end_time = time.time()
         
         # Record batch processing time
-        batch_time = end_time - start_time
-        performance_metrics['batch_times'].append(batch_time)
+        performance_metrics['batch_times'].append(batch_end_time - batch_start_time)
         
-        # Process results
-        batch_results = []
-        for item, output in zip(batch, outputs):
+        # Process outputs
+        for j, output in enumerate(outputs):
             result = {
-                "id": item["id"],
-                "prompt": item["prompt"],
-                "generated_text": output.outputs[0].text,
-                "metadata": item.get("metadata", {}),
-                "processing_time": batch_time / len(batch)
+                "id": batch[j]["id"],
+                "prompt": batch[j]["prompt"],
+                "response": output.outputs[0].text,
+                "processing_time": batch_end_time - batch_start_time
             }
-            batch_results.append(result)
-        
-        results.extend(batch_results)
+            results.append(result)
+    
+    # Record final metrics
+    performance_metrics['end_time'] = time.time()
+    performance_metrics['gpu_metrics'].append(get_gpu_metrics())
+    performance_metrics['system_metrics'].append(get_system_metrics())
     
     # Save results
-    print("Saving results...")
+    print("\nSaving results...")
     save_jsonl(results, output_file)
-    
-    # Calculate final metrics
-    performance_metrics['end_time'] = time.time()
-    total_time = performance_metrics['end_time'] - performance_metrics['start_time']
     
     # Save performance metrics
     metrics_file = output_file.replace('.jsonl', '_metrics.json')
     with open(metrics_file, 'w') as f:
         json.dump(performance_metrics, f, indent=2)
     
-    # Print statistics
+    # Print summary
+    total_time = performance_metrics['end_time'] - performance_metrics['start_time']
     print(f"\nProcessing complete!")
-    print(f"Total prompts processed: {len(data)}")
+    print(f"Total prompts processed: {len(results)}")
     print(f"Total processing time: {total_time:.2f} seconds")
-    print(f"Average time per prompt: {total_time/len(data):.2f} seconds")
+    print(f"Average time per prompt: {total_time/len(results):.2f} seconds")
     print(f"Average time per batch: {np.mean(performance_metrics['batch_times']):.2f} seconds")
     print(f"Results saved to: {output_file}")
     print(f"Performance metrics saved to: {metrics_file}")
@@ -165,7 +162,7 @@ if __name__ == "__main__":
     parser.add_argument("--max_tokens", type=int, default=128, help="Maximum tokens to generate")
     parser.add_argument("--presence_penalty", type=float, default=0.0, help="Presence penalty")
     parser.add_argument("--frequency_penalty", type=float, default=0.0, help="Frequency penalty")
-    parser.add_argument("--batch_size", type=int, default=8, help="Batch size for processing")
+    parser.add_argument("--batch_size", type=int, default=32, help="Batch size for processing")
     parser.add_argument("--num_workers", type=int, default=4, help="Number of worker threads")
     
     args = parser.parse_args()
