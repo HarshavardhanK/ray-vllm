@@ -85,21 +85,28 @@ def optimized_api_server():
     
     # Make multiple concurrent requests to demonstrate batching
     async def make_requests():
+        
         async def make_request(prompt: str):
+            
             url = "http://localhost:8000/generate"
             headers = {"Content-Type": "application/json"}
+            
             data = {
                 "prompt": prompt,
                 "max_tokens": 50,
+                
                 "temperature": 0.8,
                 "top_p": 0.95,
                 "presence_penalty": 0.1,
                 "frequency_penalty": 0.1,
                 "ignore_eos": True
             }
+            
             async with aiohttp.ClientSession() as session:
+                
                 async with session.post(url, headers=headers, json=data) as response:
                     return await response.json()
+                
         
         prompts = [
             "The capital of France is",
@@ -121,10 +128,12 @@ def optimized_api_server():
     
     try:
         asyncio.run(make_requests())
+        
     except Exception as e:
         print(f"Error making API requests: {e}")
+        
     finally:
-        # Clean up
+        #Clean up
         server_process.terminate()
         server_process.wait()
 

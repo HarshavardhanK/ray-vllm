@@ -1,0 +1,271 @@
+{
+  "start_time": 1749159596.198282,
+  "gpu_metrics": [
+    [
+      {
+        "id": 0,
+        "load": 100.0,
+        "memory_used": 44081.0,
+        "memory_total": 49140.0,
+        "temperature": 73.0
+      },
+      {
+        "id": 1,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 51.0
+      },
+      {
+        "id": 2,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 43.0
+      },
+      {
+        "id": 3,
+        "load": 100.0,
+        "memory_used": 635.0,
+        "memory_total": 49140.0,
+        "temperature": 50.0
+      },
+      {
+        "id": 4,
+        "load": 100.0,
+        "memory_used": 38395.0,
+        "memory_total": 49140.0,
+        "temperature": 57.0
+      },
+      {
+        "id": 5,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 46.0
+      },
+      {
+        "id": 6,
+        "load": 100.0,
+        "memory_used": 4941.0,
+        "memory_total": 49140.0,
+        "temperature": 61.0
+      },
+      {
+        "id": 7,
+        "load": 100.0,
+        "memory_used": 635.0,
+        "memory_total": 49140.0,
+        "temperature": 44.0
+      }
+    ],
+    [
+      {
+        "id": 0,
+        "load": 100.0,
+        "memory_used": 44083.0,
+        "memory_total": 49140.0,
+        "temperature": 72.0
+      },
+      {
+        "id": 1,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 51.0
+      },
+      {
+        "id": 2,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 43.0
+      },
+      {
+        "id": 3,
+        "load": 100.0,
+        "memory_used": 635.0,
+        "memory_total": 49140.0,
+        "temperature": 50.0
+      },
+      {
+        "id": 4,
+        "load": 100.0,
+        "memory_used": 38395.0,
+        "memory_total": 49140.0,
+        "temperature": 59.0
+      },
+      {
+        "id": 5,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 46.0
+      },
+      {
+        "id": 6,
+        "load": 100.0,
+        "memory_used": 4941.0,
+        "memory_total": 49140.0,
+        "temperature": 62.0
+      },
+      {
+        "id": 7,
+        "load": 100.0,
+        "memory_used": 635.0,
+        "memory_total": 49140.0,
+        "temperature": 44.0
+      }
+    ],
+    [
+      {
+        "id": 0,
+        "load": 100.0,
+        "memory_used": 44083.0,
+        "memory_total": 49140.0,
+        "temperature": 72.0
+      },
+      {
+        "id": 1,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 51.0
+      },
+      {
+        "id": 2,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 43.0
+      },
+      {
+        "id": 3,
+        "load": 100.0,
+        "memory_used": 635.0,
+        "memory_total": 49140.0,
+        "temperature": 50.0
+      },
+      {
+        "id": 4,
+        "load": 100.0,
+        "memory_used": 38395.0,
+        "memory_total": 49140.0,
+        "temperature": 59.0
+      },
+      {
+        "id": 5,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 46.0
+      },
+      {
+        "id": 6,
+        "load": 100.0,
+        "memory_used": 4941.0,
+        "memory_total": 49140.0,
+        "temperature": 63.0
+      },
+      {
+        "id": 7,
+        "load": 100.0,
+        "memory_used": 635.0,
+        "memory_total": 49140.0,
+        "temperature": 44.0
+      }
+    ],
+    [
+      {
+        "id": 0,
+        "load": 100.0,
+        "memory_used": 44085.0,
+        "memory_total": 49140.0,
+        "temperature": 72.0
+      },
+      {
+        "id": 1,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 51.0
+      },
+      {
+        "id": 2,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 43.0
+      },
+      {
+        "id": 3,
+        "load": 100.0,
+        "memory_used": 635.0,
+        "memory_total": 49140.0,
+        "temperature": 50.0
+      },
+      {
+        "id": 4,
+        "load": 100.0,
+        "memory_used": 38395.0,
+        "memory_total": 49140.0,
+        "temperature": 60.0
+      },
+      {
+        "id": 5,
+        "load": 100.0,
+        "memory_used": 659.0,
+        "memory_total": 49140.0,
+        "temperature": 46.0
+      },
+      {
+        "id": 6,
+        "load": 100.0,
+        "memory_used": 4941.0,
+        "memory_total": 49140.0,
+        "temperature": 61.0
+      },
+      {
+        "id": 7,
+        "load": 100.0,
+        "memory_used": 635.0,
+        "memory_total": 49140.0,
+        "temperature": 44.0
+      }
+    ]
+  ],
+  "system_metrics": [
+    {
+      "cpu_percent": 41.6,
+      "memory_percent": 14.3,
+      "memory_used": 63.41161346435547,
+      "memory_total": 503.5313529968262
+    },
+    {
+      "cpu_percent": 40.3,
+      "memory_percent": 14.3,
+      "memory_used": 63.47957229614258,
+      "memory_total": 503.5313529968262
+    },
+    {
+      "cpu_percent": 40.4,
+      "memory_percent": 14.3,
+      "memory_used": 63.506561279296875,
+      "memory_total": 503.5313529968262
+    },
+    {
+      "cpu_percent": 40.3,
+      "memory_percent": 14.3,
+      "memory_used": 63.51143264770508,
+      "memory_total": 503.5313529968262
+    }
+  ],
+  "batch_times": [
+    8.552719116210938,
+    8.54543924331665,
+    8.522981405258179,
+    7.870051860809326
+  ],
+  "memory_usage": [],
+  "end_time": 1749159758.6542583
+}
