@@ -3,36 +3,8 @@ import argparse
 import time
 from typing import List, Dict, Any
 import torch
-import torch.cuda
 from vllm import LLM, SamplingParams
 from tqdm import tqdm
-import numpy as np
-from concurrent.futures import ThreadPoolExecutor
-import psutil
-import GPUtil
-
-def get_gpu_metrics():
-    """Get current GPU metrics."""
-    gpus = GPUtil.getGPUs()
-    metrics = []
-    for gpu in gpus:
-        metrics.append({
-            'id': gpu.id,
-            'load': gpu.load * 100,
-            'memory_used': gpu.memoryUsed,
-            'memory_total': gpu.memoryTotal,
-            'temperature': gpu.temperature
-        })
-    return metrics
-
-def get_system_metrics():
-    """Get current system metrics."""
-    return {
-        'cpu_percent': psutil.cpu_percent(),
-        'memory_percent': psutil.virtual_memory().percent,
-        'memory_used': psutil.virtual_memory().used / (1024 * 1024 * 1024),  # GB
-        'memory_total': psutil.virtual_memory().total / (1024 * 1024 * 1024)  # GB
-    }
 
 def load_jsonl(file_path: str) -> List[Dict[str, Any]]:
     """Load data from a JSONL file."""
@@ -57,34 +29,26 @@ def process_batch(
     max_tokens: int = 128,
     presence_penalty: float = 0.0,
     frequency_penalty: float = 0.0,
-    batch_size: int = 32,
+    batch_size: int = 8,
     num_workers: int = 4
 ):
     """Process a batch of prompts from a JSONL file with optimized performance."""
     
-    # Initialize performance metrics
-    performance_metrics = {
-        'start_time': time.time(),
-        'gpu_metrics': [],
-        'system_metrics': [],
-        'batch_times': []
-    }
-    
-    # Clear CUDA cache and set memory allocation strategy
+    # Clear CUDA cache
     torch.cuda.empty_cache()
-    torch.cuda.set_per_process_memory_fraction(0.85)
     
     print("Loading model...")
     llm = LLM(
         model=model_name,
         tensor_parallel_size=torch.cuda.device_count(),
-        gpu_memory_utilization=0.9,
-        enforce_eager=True,
-        max_num_batched_tokens=8192,
-        max_num_seqs=512,
-        max_model_len=2048,
-        dtype="bfloat16",
-        trust_remote_code=True
+        gpu_memory_utilization=0.95,  # High memory utilization for better throughput
+        enforce_eager=True,  # Keep eager mode for faster initialization
+        max_num_batched_tokens=4096,  # Match model's max position embeddings
+        max_num_seqs=256,  # Reduced for better stability
+        max_model_len=4096,  # Match model's max position embeddings
+        dtype="bfloat16",  # Using bfloat16 for better memory efficiency
+        trust_remote_code=True,
+        enable_chunked_prefill=True  # Enable chunked prefill for better memory efficiency
     )
     
     print("Loading input data...")
@@ -100,57 +64,38 @@ def process_batch(
     
     print("Processing prompts...")
     results = []
+    start_time = time.time()
     
-    # Process in batches with dynamic batch size
+    # Process in batches
     for i in tqdm(range(0, len(data), batch_size)):
         batch = data[i:i + batch_size]
         prompts = [item["prompt"] for item in batch]
         
-        # Record metrics before processing
-        performance_metrics['gpu_metrics'].append(get_gpu_metrics())
-        performance_metrics['system_metrics'].append(get_system_metrics())
-        
         # Process batch
-        batch_start_time = time.time()
         outputs = llm.generate(prompts, sampling_params)
-        batch_end_time = time.time()
-        
-        # Record batch processing time
-        performance_metrics['batch_times'].append(batch_end_time - batch_start_time)
         
         # Process outputs
         for j, output in enumerate(outputs):
             result = {
                 "id": batch[j]["id"],
                 "prompt": batch[j]["prompt"],
-                "response": output.outputs[0].text,
-                "processing_time": batch_end_time - batch_start_time
+                "response": output.outputs[0].text
             }
             results.append(result)
     
-    # Record final metrics
-    performance_metrics['end_time'] = time.time()
-    performance_metrics['gpu_metrics'].append(get_gpu_metrics())
-    performance_metrics['system_metrics'].append(get_system_metrics())
+    end_time = time.time()
     
     # Save results
     print("\nSaving results...")
     save_jsonl(results, output_file)
     
-    # Save performance metrics
-    metrics_file = output_file.replace('.jsonl', '_metrics.json')
-    with open(metrics_file, 'w') as f:
-        json.dump(performance_metrics, f, indent=2)
-    
     # Print summary
-    total_time = performance_metrics['end_time'] - performance_metrics['start_time']
+    total_time = end_time - start_time
     print(f"\nProcessing complete!")
     print(f"Total prompts processed: {len(results)}")
     print(f"Total processing time: {total_time:.2f} seconds")
     print(f"Average time per prompt: {total_time/len(results):.2f} seconds")
-    print(f"Average time per batch: {np.mean(performance_metrics['batch_times']):.2f} seconds")
     print(f"Results saved to: {output_file}")
-    print(f"Performance metrics saved to: {metrics_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process a batch of prompts using optimized vLLM")
@@ -162,7 +107,7 @@ if __name__ == "__main__":
     parser.add_argument("--max_tokens", type=int, default=128, help="Maximum tokens to generate")
     parser.add_argument("--presence_penalty", type=float, default=0.0, help="Presence penalty")
     parser.add_argument("--frequency_penalty", type=float, default=0.0, help="Frequency penalty")
-    parser.add_argument("--batch_size", type=int, default=32, help="Batch size for processing")
+    parser.add_argument("--batch_size", type=int, default=8, help="Batch size for processing")
     parser.add_argument("--num_workers", type=int, default=4, help="Number of worker threads")
     
     args = parser.parse_args()
