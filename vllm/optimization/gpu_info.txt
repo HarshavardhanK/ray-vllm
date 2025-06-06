@@ -1,0 +1,387 @@
+=== GPU Information ===
+
+{
+  "total_gpus": 8,
+  "gpus": [
+    {
+      "device_id": 0,
+      "name": "NVIDIA RTX 6000 Ada Generation",
+      "total_memory": 47.5001220703125,
+      "compute_capability": "8.9",
+      "total_memory_smi": 49140.0,
+      "free_memory": 4691.0,
+      "gpu_utilization": 100.0,
+      "cuda_cores": 6912
+    },
+    {
+      "device_id": 1,
+      "name": "NVIDIA RTX 6000 Ada Generation",
+      "total_memory": 47.5001220703125,
+      "compute_capability": "8.9",
+      "total_memory_smi": 49140.0,
+      "free_memory": 47982.0,
+      "gpu_utilization": 100.0,
+      "cuda_cores": 6912
+    },
+    {
+      "device_id": 2,
+      "name": "NVIDIA RTX 6000 Ada Generation",
+      "total_memory": 47.5001220703125,
+      "compute_capability": "8.9",
+      "total_memory_smi": 49140.0,
+      "free_memory": 47982.0,
+      "gpu_utilization": 100.0,
+      "cuda_cores": 6912
+    },
+    {
+      "device_id": 3,
+      "name": "NVIDIA RTX 6000 Ada Generation",
+      "total_memory": 47.5001220703125,
+      "compute_capability": "8.9",
+      "total_memory_smi": 49140.0,
+      "free_memory": 48006.0,
+      "gpu_utilization": 100.0,
+      "cuda_cores": 6912
+    },
+    {
+      "device_id": 4,
+      "name": "NVIDIA RTX 6000 Ada Generation",
+      "total_memory": 47.5001220703125,
+      "compute_capability": "8.9",
+      "total_memory_smi": 49140.0,
+      "free_memory": 31476.0,
+      "gpu_utilization": 100.0,
+      "cuda_cores": 6912
+    },
+    {
+      "device_id": 5,
+      "name": "NVIDIA RTX 6000 Ada Generation",
+      "total_memory": 47.5001220703125,
+      "compute_capability": "8.9",
+      "total_memory_smi": 49140.0,
+      "free_memory": 47982.0,
+      "gpu_utilization": 100.0,
+      "cuda_cores": 6912
+    },
+    {
+      "device_id": 6,
+      "name": "NVIDIA RTX 6000 Ada Generation",
+      "total_memory": 47.5001220703125,
+      "compute_capability": "8.9",
+      "total_memory_smi": 49140.0,
+      "free_memory": 43700.0,
+      "gpu_utilization": 100.0,
+      "cuda_cores": 6912
+    },
+    {
+      "device_id": 7,
+      "name": "NVIDIA RTX 6000 Ada Generation",
+      "total_memory": 47.5001220703125,
+      "compute_capability": "8.9",
+      "total_memory_smi": 49140.0,
+      "free_memory": 41716.0,
+      "gpu_utilization": 100.0,
+      "cuda_cores": 6912
+    }
+  ],
+  "cuda_version": "12.6",
+  "cudnn_version": 90501,
+  "current_memory_allocated": 0.0,
+  "current_memory_reserved": 0.0
+}
+
+=== Thread Estimation Examples ===
+
+Estimating for meta-llama/Llama-2-7b-chat-hf:
+{
+  "model_name": "meta-llama/Llama-2-7b-chat-hf",
+  "batch_size": 1,
+  "estimated_threads_per_prompt": 256,
+  "available_gpu_cores": 6912,
+  "theoretical_occupancy": 0.037037037037037035,
+  "gpu_info": {
+    "total_gpus": 8,
+    "gpus": [
+      {
+        "device_id": 0,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 4691.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 1,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 47982.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 2,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 47982.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 3,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 48006.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 4,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 31476.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 5,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 47982.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 6,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 43700.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 7,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 41716.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      }
+    ],
+    "cuda_version": "12.6",
+    "cudnn_version": 90501,
+    "current_memory_allocated": 0.0,
+    "current_memory_reserved": 0.0
+  }
+}
+
+Estimating for meta-llama/Llama-2-13b-chat-hf:
+{
+  "model_name": "meta-llama/Llama-2-13b-chat-hf",
+  "batch_size": 1,
+  "estimated_threads_per_prompt": 384,
+  "available_gpu_cores": 6912,
+  "theoretical_occupancy": 0.05555555555555555,
+  "gpu_info": {
+    "total_gpus": 8,
+    "gpus": [
+      {
+        "device_id": 0,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 4691.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 1,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 47982.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 2,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 47982.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 3,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 48006.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 4,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 31476.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 5,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 47982.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 6,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 43700.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 7,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 41716.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      }
+    ],
+    "cuda_version": "12.6",
+    "cudnn_version": 90501,
+    "current_memory_allocated": 0.0,
+    "current_memory_reserved": 0.0
+  }
+}
+
+Estimating for meta-llama/Llama-2-70b-chat-hf:
+{
+  "model_name": "meta-llama/Llama-2-70b-chat-hf",
+  "batch_size": 1,
+  "estimated_threads_per_prompt": 512,
+  "available_gpu_cores": 6912,
+  "theoretical_occupancy": 0.07407407407407407,
+  "gpu_info": {
+    "total_gpus": 8,
+    "gpus": [
+      {
+        "device_id": 0,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 4691.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 1,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 47982.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 2,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 47982.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 3,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 48006.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 4,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 31476.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 5,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 47982.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 6,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 43700.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      },
+      {
+        "device_id": 7,
+        "name": "NVIDIA RTX 6000 Ada Generation",
+        "total_memory": 47.5001220703125,
+        "compute_capability": "8.9",
+        "total_memory_smi": 49140.0,
+        "free_memory": 41716.0,
+        "gpu_utilization": 100.0,
+        "cuda_cores": 6912
+      }
+    ],
+    "cuda_version": "12.6",
+    "cudnn_version": 90501,
+    "current_memory_allocated": 0.0,
+    "current_memory_reserved": 0.0
+  }
+}

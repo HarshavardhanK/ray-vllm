@@ -135,4 +135,5 @@ db.sqlite3-journal
 
 *.documentation.md
 *.instructions.md
-Performance Guidlines.txt
+*.Performance_Guidlines.txt
+*.gpu_info.txt
