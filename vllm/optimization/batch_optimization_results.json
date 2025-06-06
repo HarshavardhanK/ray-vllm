@@ -1,0 +1,206 @@
+{
+  "all_results": [
+    {
+      "batch_size": 1,
+      "avg_time": 23.13980107419193,
+      "std_time": 0.0049336133434149,
+      "throughput": 0.12964674978757412,
+      "prompts_tested": 3,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 3.7037037037037033,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 2,
+      "avg_time": 23.714507957920432,
+      "std_time": 0.0486181647009871,
+      "throughput": 0.25300967705703775,
+      "prompts_tested": 6,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 7.4074074074074066,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 4,
+      "avg_time": 24.37465068511665,
+      "std_time": 0.025333190482700895,
+      "throughput": 0.49231474760486693,
+      "prompts_tested": 12,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 14.814814814814813,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 8,
+      "avg_time": 25.411602565273643,
+      "std_time": 0.01022023451362035,
+      "throughput": 0.9444504705420399,
+      "prompts_tested": 24,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 29.629629629629626,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 16,
+      "avg_time": 25.637102199718356,
+      "std_time": 0.006009870772941804,
+      "throughput": 1.8722864864394588,
+      "prompts_tested": 48,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 59.25925925925925,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 32,
+      "avg_time": 28.253838795796035,
+      "std_time": 0.01773783314549348,
+      "throughput": 3.397768377381841,
+      "prompts_tested": 96,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 100.0,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 64,
+      "avg_time": 10.415590604022146,
+      "std_time": 0.013585724462097545,
+      "throughput": 6.14463475314452,
+      "prompts_tested": 64,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 100.0,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "error": "Not enough prompts for full batch"
+    },
+    {
+      "error": "Not enough prompts for full batch"
+    }
+  ],
+  "valid_results": [
+    {
+      "batch_size": 1,
+      "avg_time": 23.13980107419193,
+      "std_time": 0.0049336133434149,
+      "throughput": 0.12964674978757412,
+      "prompts_tested": 3,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 3.7037037037037033,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 2,
+      "avg_time": 23.714507957920432,
+      "std_time": 0.0486181647009871,
+      "throughput": 0.25300967705703775,
+      "prompts_tested": 6,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 7.4074074074074066,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 4,
+      "avg_time": 24.37465068511665,
+      "std_time": 0.025333190482700895,
+      "throughput": 0.49231474760486693,
+      "prompts_tested": 12,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 14.814814814814813,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 8,
+      "avg_time": 25.411602565273643,
+      "std_time": 0.01022023451362035,
+      "throughput": 0.9444504705420399,
+      "prompts_tested": 24,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 29.629629629629626,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 16,
+      "avg_time": 25.637102199718356,
+      "std_time": 0.006009870772941804,
+      "throughput": 1.8722864864394588,
+      "prompts_tested": 48,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 59.25925925925925,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 32,
+      "avg_time": 28.253838795796035,
+      "std_time": 0.01773783314549348,
+      "throughput": 3.397768377381841,
+      "prompts_tested": 96,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 100.0,
+      "efficiency_score": Infinity,
+      "error": null
+    },
+    {
+      "batch_size": 64,
+      "avg_time": 10.415590604022146,
+      "std_time": 0.013585724462097545,
+      "throughput": 6.14463475314452,
+      "prompts_tested": 64,
+      "memory_peak_gb": 0.0,
+      "gpu_utilization_est": 100.0,
+      "efficiency_score": Infinity,
+      "error": null
+    }
+  ],
+  "best_throughput": {
+    "batch_size": 64,
+    "avg_time": 10.415590604022146,
+    "std_time": 0.013585724462097545,
+    "throughput": 6.14463475314452,
+    "prompts_tested": 64,
+    "memory_peak_gb": 0.0,
+    "gpu_utilization_est": 100.0,
+    "efficiency_score": Infinity,
+    "error": null
+  },
+  "best_efficiency": {
+    "batch_size": 1,
+    "avg_time": 23.13980107419193,
+    "std_time": 0.0049336133434149,
+    "throughput": 0.12964674978757412,
+    "prompts_tested": 3,
+    "memory_peak_gb": 0.0,
+    "gpu_utilization_est": 3.7037037037037033,
+    "efficiency_score": Infinity,
+    "error": null
+  },
+  "best_memory": {
+    "batch_size": 1,
+    "avg_time": 23.13980107419193,
+    "std_time": 0.0049336133434149,
+    "throughput": 0.12964674978757412,
+    "prompts_tested": 3,
+    "memory_peak_gb": 0.0,
+    "gpu_utilization_est": 3.7037037037037033,
+    "efficiency_score": Infinity,
+    "error": null
+  },
+  "recommendation": {
+    "recommended_batch_size": 64,
+    "reason": "Best balance of throughput (6.1 prompts/s) and memory usage (0.0GB)",
+    "throughput": 6.14463475314452,
+    "memory_gb": 0.0,
+    "efficiency_score": Infinity
+  }
+}

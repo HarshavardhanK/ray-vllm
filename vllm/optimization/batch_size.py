@@ -279,7 +279,7 @@ def run_batch_size_optimization():
     ]
     
     optimizer = BatchSizeOptimizer(
-        model_name="meta-llama/Llama-2-7b-chat-hf",
+        model_name="meta-llama/Llama-4-Scout-17B-16E-Instruct",
         test_prompts=test_prompts
     )
     
@@ -309,10 +309,10 @@ def run_batch_size_optimization():
           f"({results['best_memory']['memory_peak_gb']:.1f} GB)")
     
     # Plot results
-    optimizer.plot_results("batch_size_optimization.png")
+    optimizer.plot_results(f"batch_size_optimization_{model_name}.png")
     
     # Save detailed results
-    with open("batch_optimization_results.json", "w") as f:
+    with open(f"batch_optimization_results_{model_name}.json", "w") as f:
         json.dump(results, f, indent=2)
     
     return optimizer
