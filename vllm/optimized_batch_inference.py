@@ -98,15 +98,19 @@ def process_batch(
     print(f"Results saved to: {output_file}")
 
 if __name__ == "__main__":
+    
     parser = argparse.ArgumentParser(description="Process a batch of prompts using optimized vLLM")
     parser.add_argument("--input", required=True, help="Input JSONL file path")
     parser.add_argument("--output", required=True, help="Output JSONL file path")
+    
     parser.add_argument("--model", default="meta-llama/Llama-2-7b-chat-hf", help="Model name or path")
     parser.add_argument("--temperature", type=float, default=0.7, help="Sampling temperature")
     parser.add_argument("--top_p", type=float, default=0.95, help="Top-p sampling parameter")
+    
     parser.add_argument("--max_tokens", type=int, default=128, help="Maximum tokens to generate")
     parser.add_argument("--presence_penalty", type=float, default=0.0, help="Presence penalty")
     parser.add_argument("--frequency_penalty", type=float, default=0.0, help="Frequency penalty")
+    
     parser.add_argument("--batch_size", type=int, default=8, help="Batch size for processing")
     parser.add_argument("--num_workers", type=int, default=4, help="Number of worker threads")
     

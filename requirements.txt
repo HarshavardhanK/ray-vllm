@@ -1,0 +1,12 @@
+#Common dependencies for the project
+torch>=2.0.0
+transformers>=4.31.0
+accelerate>=0.21.0
+sentencepiece>=0.1.99
+protobuf>=4.24.0
+
+#vLLM dependencies
+vllm>=0.2.0
+
+#Ray dependencies
+ray>=2.9.0
