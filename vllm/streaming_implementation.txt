@@ -1,0 +1,94 @@
+#vLLM Streaming Implementation Guide
+
+##Server Setup
+The server uses vLLM's built-in OpenAI-compatible API endpoints for streaming. The implementation is in `vllm/streaming_server.py`:
+
+```python
+from fastapi import FastAPI, Request
+from fastapi.responses import StreamingResponse
+import json
+import asyncio
+from typing import AsyncGenerator
+from vllm.entrypoints.openai.api_server import create_app
+
+#Create FastAPI app with vLLM's OpenAI-compatible endpoints
+app = create_app()
+
+#Add a simple health check endpoint
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+```
+
+##Starting the Server
+To start the server with a specific model:
+```bash
+python -m vllm.entrypoints.openai.api_server \
+    --model meta-llama/Llama-2-7b-chat-hf \
+    --host 0.0.0.0 \
+    --port 8000
+```
+
+##Using the Streaming Endpoint
+
+###Using curl:
+```bash
+curl http://localhost:8000/v1/chat/completions \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "meta-llama/Llama-2-7b-chat-hf",
+        "messages": [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Tell me a story"}
+        ],
+        "stream": true
+    }'
+```
+
+###Using Python with OpenAI client:
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="EMPTY",
+    base_url="http://localhost:8000/v1"
+)
+
+stream = client.chat.completions.create(
+    model="meta-llama/Llama-2-7b-chat-hf",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Tell me a story"}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content is not None:
+        print(chunk.choices[0].delta.content, end="", flush=True)
+```
+
+##Key Features
+1. Uses vLLM's official streaming implementation
+2. Compatible with OpenAI API format
+3. Supports both chat completions and regular completions
+4. Handles streaming logic internally
+5. Uses vLLM's optimized streaming implementation
+
+##Dependencies
+Make sure these are in your requirements.txt:
+```
+fastapi>=0.100.0
+uvicorn>=0.23.0
+vllm>=0.2.0
+```
+
+##Notes
+- The server uses vLLM's OpenAI-compatible API endpoints
+- Streaming is handled through Server-Sent Events (SSE)
+- The implementation is optimized for both performance and compatibility
+- Health check endpoint is available at `/health` 

@@ -10,3 +10,7 @@ vllm>=0.2.0
 
 #Ray dependencies
 ray>=2.9.0
+
+#API dependencies
+fastapi>=0.100.0
+uvicorn>=0.23.0
