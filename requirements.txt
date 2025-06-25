@@ -6,7 +6,7 @@ sentencepiece==0.2.0
 protobuf==3.20.3
 
 #vLLM dependencies
-vllm==0.8.2
+vllm>=0.8.2
 
 #Ray dependencies
 ray==2.44.1
