@@ -1,3 +1,8 @@
+#Disable flash-attention and use PyTorch native SDPA
+import os
+os.environ['USE_FLASH_ATTENTION_2'] = 'false'
+os.environ['TRANSFORMERS_ATTENTION_IMPLEMENTATION'] = 'sdpa'
+
 import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
@@ -7,35 +12,37 @@ import numpy as np
 
 
 class EmbeddingService:
-    def __init__(self, model_name: str = "Qwen/Qwen3-Embedding-8B", use_sentence_transformers: bool = True):
+    def __init__(self, model_name: str = None, use_sentence_transformers: bool = True):
         """
         Initialize the embedding service with Qwen3-Embedding-8B model.
         
         Args:
-            model_name: HuggingFace model identifier
+            model_name: HuggingFace model identifier (if None, uses default)
             use_sentence_transformers: Whether to use sentence-transformers (recommended) or transformers directly
         """
-        self.model_name = model_name
+        self.model_name = model_name or 'Qwen/Qwen3-Embedding-8B'
         self.use_sentence_transformers = use_sentence_transformers
+        self.device = 'cuda:1'  #Manually use the free GPU
         
         if use_sentence_transformers:
             #Use sentence-transformers for easier usage
             self.model = SentenceTransformer(
-                model_name,
-                model_kwargs={"attn_implementation": "flash_attention_2", "device_map": "auto"},
+                self.model_name,
+                device=self.device,
+                model_kwargs={"attn_implementation": "sdpa"},
                 tokenizer_kwargs={"padding_side": "left"}
             )
             self.tokenizer = None
         else:
             #Use transformers directly for more control
-            self.tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side='left')
+            self.tokenizer = AutoTokenizer.from_pretrained(self.model_name, padding_side='left')
             self.model = AutoModel.from_pretrained(
-                model_name, 
-                attn_implementation="flash_attention_2", 
+                self.model_name, 
+                attn_implementation="sdpa", 
                 torch_dtype=torch.float16
-            ).cuda()
+            ).to(self.device)
         
-        print(f"Embedding service initialized with {model_name}")
+        print(f"Embedding service initialized with {self.model_name} on {self.device}")
     
     def last_token_pool(self, last_hidden_states: torch.Tensor, attention_mask: torch.Tensor) -> torch.Tensor:
         """Extract embeddings using last token pooling."""

@@ -1,3 +1,8 @@
+#Disable flash-attention and use PyTorch native SDPA
+import os
+os.environ['USE_FLASH_ATTENTION_2'] = 'false'
+os.environ['TRANSFORMERS_ATTENTION_IMPLEMENTATION'] = 'sdpa'
+
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
@@ -8,8 +13,8 @@ class PromptGuardService:
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_id)
         self.model = AutoModelForSequenceClassification.from_pretrained(self.model_id)
         
-        #Move model to GPU if available
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        #Move model to the free GPU
+        self.device = torch.device('cuda:1')
         self.model.to(self.device)
 
     def validate_input(self, text: str) -> dict:

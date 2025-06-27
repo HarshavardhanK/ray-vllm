@@ -1,3 +1,8 @@
+#Disable flash-attention and use PyTorch native SDPA
+import os
+os.environ['USE_FLASH_ATTENTION_2'] = 'false'
+os.environ['TRANSFORMERS_ATTENTION_IMPLEMENTATION'] = 'sdpa'
+
 import torch
 import vllm
 from vllm import LLM
@@ -6,19 +11,21 @@ import numpy as np
 
 
 class VLLMEmbeddingService:
-    def __init__(self, model_name: str = "Qwen/Qwen3-Embedding-8B"):
+    def __init__(self, model_name: str = None):
         """
         Initialize the vLLM embedding service with Qwen3-Embedding-8B model.
         
         Args:
-            model_name: HuggingFace model identifier
+            model_name: HuggingFace model identifier (if None, uses default)
         """
-        self.model_name = model_name
+        self.model_name = model_name or 'Qwen/Qwen3-Embedding-8B'
+        self.device = 'cuda:1'  #Manually use the free GPU
         
         #Initialize vLLM model for embedding task
-        self.model = LLM(model=model_name, task="embed")
+        #vLLM automatically handles GPU allocation, but we can specify tensor_parallel_size
+        self.model = LLM(model=self.model_name, task="embed")
         
-        print(f"vLLM embedding service initialized with {model_name}")
+        print(f"vLLM embedding service initialized with {self.model_name} on {self.device}")
     
     def get_detailed_instruct(self, task_description: str, query: str) -> str:
         """Format instruction for query embedding."""
