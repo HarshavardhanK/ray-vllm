@@ -1,0 +1,47 @@
+services:
+  hosting-service:
+    build: .
+    ports:
+      - "8003:8001"
+    environment:
+      - USE_FLASH_ATTENTION_2=false
+      - TRANSFORMERS_ATTENTION_IMPLEMENTATION=sdpa
+      - HF_TOKEN=${HF_TOKEN}  # Hugging Face token from host environment
+    volumes:
+      - ./models:/app/models  # Optional: mount for model caching
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # GPU-enabled version (use this profile when GPU is available)
+  hosting-service-gpu:
+    profiles: ["gpu"]
+    build: .
+    ports:
+      - "8003:8001"
+    environment:
+      - CUDA_VISIBLE_DEVICES=1
+      - NVIDIA_VISIBLE_DEVICES=1
+      - USE_FLASH_ATTENTION_2=false
+      - TRANSFORMERS_ATTENTION_IMPLEMENTATION=sdpa
+      - HF_TOKEN=${HF_TOKEN}  # Hugging Face token from host environment
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
+    volumes:
+      - ./models:/app/models
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 

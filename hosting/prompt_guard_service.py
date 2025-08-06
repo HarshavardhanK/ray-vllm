@@ -13,9 +13,13 @@ class PromptGuardService:
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_id)
         self.model = AutoModelForSequenceClassification.from_pretrained(self.model_id)
         
-        #Move model to the free GPU
-        self.device = torch.device('cuda:1')
+        #Move model to GPU if available
+        if torch.cuda.is_available():
+            self.device = torch.device('cuda:0')  # Use GPU 0 as configured in docker-compose
+        else:
+            self.device = torch.device('cpu')
         self.model.to(self.device)
+        print(f"PromptGuard model loaded on {self.device}")
 
     def validate_input(self, text: str) -> dict:
         #Tokenize the input text

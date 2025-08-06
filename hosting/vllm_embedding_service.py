@@ -19,7 +19,11 @@ class VLLMEmbeddingService:
             model_name: HuggingFace model identifier (if None, uses default)
         """
         self.model_name = model_name or 'Qwen/Qwen3-Embedding-8B'
-        self.device = 'cuda:1'  #Manually use the free GPU
+        # Use GPU 0 as configured in docker-compose
+        if torch.cuda.is_available():
+            self.device = 'cuda:0'
+        else:
+            self.device = 'cpu'
         
         #Initialize vLLM model for embedding task
         #vLLM automatically handles GPU allocation, but we can specify tensor_parallel_size

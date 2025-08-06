@@ -9,14 +9,15 @@ import torch
 
 class CrossEncoderService:
     def __init__(self):
-        #Manually use the free GPU
-        self.device = 'cuda:1'
+        #Check if CUDA is available, otherwise use CPU
+        if torch.cuda.is_available():
+            self.device = 'cuda:0'  # Use GPU 0 as configured in docker-compose
+        else:
+            self.device = 'cpu'
         
-        #Initialize the model
+        #Initialize the model with device specification
         model_name = 'cross-encoder/ms-marco-MiniLM-L6-v2'
-        self.model = CrossEncoder(model_name)
-        #Move model to the selected device
-        self.model.to(self.device)
+        self.model = CrossEncoder(model_name, device=self.device)
         print(f"CrossEncoder model loaded on {self.device}")
 
     def predict(self, query: str, passages: list) -> list:

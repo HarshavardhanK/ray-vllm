@@ -22,7 +22,11 @@ class EmbeddingService:
         """
         self.model_name = model_name or 'Qwen/Qwen3-Embedding-8B'
         self.use_sentence_transformers = use_sentence_transformers
-        self.device = 'cuda:1'  #Manually use the free GPU
+        # Use GPU 0 as configured in docker-compose
+        if torch.cuda.is_available():
+            self.device = 'cuda:0'
+        else:
+            self.device = 'cpu'
         
         if use_sentence_transformers:
             #Use sentence-transformers for easier usage
