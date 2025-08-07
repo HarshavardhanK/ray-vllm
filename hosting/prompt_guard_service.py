@@ -13,13 +13,35 @@ class PromptGuardService:
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_id)
         self.model = AutoModelForSequenceClassification.from_pretrained(self.model_id)
         
-        #Move model to GPU if available
+        #Move model to GPU if available and has enough memory
         if torch.cuda.is_available():
-            self.device = torch.device('cuda:0')  # Use GPU 0 as configured in docker-compose
+            #Check available GPU memory
+            gpu_memory = torch.cuda.get_device_properties(0).total_memory
+            allocated_memory = torch.cuda.memory_allocated(0)
+            free_memory = gpu_memory - allocated_memory
+            
+            #Estimate model size (rough estimate for Llama-Prompt-Guard-2-86M)
+            estimated_model_size = 86 * 1024 * 1024 * 1024  # 86M parameters * 4 bytes per parameter
+            
+            if free_memory > estimated_model_size * 1.5:  # Leave some buffer
+                try:
+                    self.device = torch.device('cuda:0')
+                    self.model.to(self.device)
+                    print(f"PromptGuard model loaded on {self.device}")
+                except Exception as e:
+                    print(f"Failed to load model on GPU: {e}, falling back to CPU")
+                    self.device = torch.device('cpu')
+                    self.model.to(self.device)
+                    print(f"PromptGuard model loaded on {self.device}")
+            else:
+                print(f"GPU memory insufficient (free: {free_memory/1024**3:.2f}GB), falling back to CPU")
+                self.device = torch.device('cpu')
+                self.model.to(self.device)
+                print(f"PromptGuard model loaded on {self.device}")
         else:
             self.device = torch.device('cpu')
-        self.model.to(self.device)
-        print(f"PromptGuard model loaded on {self.device}")
+            self.model.to(self.device)
+            print(f"PromptGuard model loaded on {self.device}")
 
     def validate_input(self, text: str) -> dict:
         #Tokenize the input text
